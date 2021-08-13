@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/formatting.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+    <title>To Do</title>
+
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <form th:action="@{/to-do/save}" th:object="${thing1}" method="POST" class="row" style="font-family:cursive">
+        <input th:field="${thing1.thing}" placeholder=" new thing to do" style="height:40px">
+        <button type="submit" class="btn btn-info">Add</button>
+    </form>
+    <br>
+
+    <hr>
+
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <h2 style="font-family: cursive">Things To Do</h2>
+            <br>
+
+            <div style="font-size:25px" th:each="td: ${todo}">
+                <span>
+                    <a th:href="@{/to-do/delete/{id}(id=${td.id})}"> <span> <i class="fas fa-trash" style="color:purple; font-size:25px; font-family: 'FontAwesome'; font-weight: normal;
+  font-style: normal"></i> </span>
+                    </a>
+                    <input style="height:18px; width:50px" type="checkbox" th:id="${td.id}"/>
+                    <label style="word-wrap:break-word; width:80%" th:text="${td.thing}"></label>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-2" style="border-left:1px solid #d3d3d3; height:600px"></div>
+
+        <div class="col-md-5">
+            <h2 style="font-family:cursive">Done</h2>
+            <br>
+            <div style="font-size:25px" th:each="d: ${done}">
+                <a th:href="@{/to-do/delete/{id}(id=${d.id})}"> <span> <i class="fas fa-trash" style="color:darkred; font-size:25px; font-family: 'FontAwesome'; font-weight: normal;
+  font-style: normal"></i> </span>
+                </a>
+                <span> <i class="fas fa-check" style="color:green; font-size:25px; font-family: 'FontAwesome'; font-weight: normal;
+  font-style: normal"></i> </span>
+                <span th:text="${d.thing}"></span>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    window.onload = () => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+        for (const c of checkboxes) {
+           c.addEventListener('click', function (event) {
+
+            const id = event.target.id;
+
+
+            fetch(`/api/todo/check/${id}`, {
+                 method: 'POST'
+            }).then(() => {
+                window.location.reload();
+
+            });
+           });
+        }
+    }
+
+</script>
+</body>
+
+
+</html>
