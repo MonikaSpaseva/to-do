@@ -3,7 +3,7 @@ package todoapp.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "the_thing")
 public class TheThing {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "the_thing_seq")
